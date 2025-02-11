@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Carnet {
+    string nombre, apellido, cedula, genero;
+    int edad, semestre;
+    double promedio;
+};
+
+// Función para validar la edad (debe tener dos dígitos entre 10 y 99)
+bool validarEdad(int edad) {
+    return edad >= 10 && edad <= 99;
+}
+
+// Función para contar y mostrar el número de estudiantes por género
+void contarPorGenero(const vector<Carnet>& estudiantes) {
+    int mujeres = 0, varones = 0;
+    for (const auto& est : estudiantes) {
+        if (est.genero == "F" || est.genero == "f")
+            mujeres++;
+        else if (est.genero == "M" || est.genero == "m")
+            varones++;
+    }
+    cout << "\nTotal de mujeres: " << mujeres << endl;
+    cout << "Total de varones: " << varones << endl;
+}
+
+// Primera versión con arreglos dinámicos
+typedef Carnet* ptrCarnet;
+void versionArregloDinamico(int N) {
+    ptrCarnet estudiantes = new Carnet[N];
+    
+    for (int i = 0; i < N; i++) {
+        cout << "\nIngrese datos del estudiante " << i + 1 << ":" << endl;
+        cout << "Nombre: "; cin >> estudiantes[i].nombre;
+        cout << "Apellido: "; cin >> estudiantes[i].apellido;
+        cout << "Cédula: "; cin >> estudiantes[i].cedula;
+        do {
+            cout << "Edad (10-99): "; cin >> estudiantes[i].edad;
+        } while (!validarEdad(estudiantes[i].edad));
+        cout << "Género (M/F): "; cin >> estudiantes[i].genero;
+        cout << "Semestre: "; cin >> estudiantes[i].semestre;
+        cout << "Promedio: "; cin >> estudiantes[i].promedio;
+    }
+    
+    vector<Carnet> estVec(estudiantes, estudiantes + N);
+    contarPorGenero(estVec);
+    
+    delete[] estudiantes;
+}
